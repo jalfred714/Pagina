@@ -1,6 +1,6 @@
-baseURL: http://example.com/
+baseURL: "https://juanpacheco.netlify.app/"
 languageCode: en-us
-title: Minimal
+title: Juan Pacheco
 theme: minimal
 disqusShortname: username
 googleAnalytics: ''
@@ -8,9 +8,9 @@ params:
   accent: red
   author: Calin Tataru
   backgroundColor: white
-  description: Personal blog theme powered by Hugo
+  description: Economist and Msc. Applied Economics student. Interested in Macroeconomics and Econometrics
   font: Raleway
-  githubUsername: '#'
+  githubUsername: 'jalfred714'
   highlight: yes
   highlightLanguages:
     - go
@@ -23,20 +23,18 @@ params:
 menu:
   icon:
     - name: fas fa-envelope
-      url: mailto:me@example.com
+      url: mailto:juanalfred16@hotmail.com
       weight: 1
     - name: fab fa-github
-      url: https://github.com/username/
+      url: https://github.com/jalfred714/
       weight: 2
     - name: fab fa-twitter
-      url: https://twitter.com/username/
+      url: https://twitter.com/jalfred7/
       weight: 3
     - name: fab fa-linkedin
-      url: https://www.linkedin.com/in/username/
+      url: https://www.linkedin.com/in/juan-pacheco-314263111/
       weight: 4
-    - name: fab fa-stack-overflow
-      url: https://www.stackoverflow.com/username/
-      weight: 5
+   
   main:
     - name: Home
       url: /

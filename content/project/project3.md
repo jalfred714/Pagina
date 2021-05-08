@@ -1,7 +1,7 @@
 ---
-description: Cras felis sapien
+description: R-vs-code
 draft: false
-repo: '#'
+repo: "#https://github.com/jalfred714/blog-"
 tags:
 - bootstrap
 - responsive

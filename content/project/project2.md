@@ -1,7 +1,7 @@
 ---
-description: Consectetur adipiscing elit
+description: pagina
 draft: false
-repo: '#'
+repo: 'jalfred714/blog-'
 tags:
 - html
 - css

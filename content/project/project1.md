@@ -1,11 +1,11 @@
 ---
-description: Lorem ipsum dolor sit amet
-draft: false
-repo: '#'
+title: "Project 1"
+draft: no
+repo: "#https://github.com/jalfred714/blog-"
 tags:
 - go
 - golang
 - hugo
-title: Project 1
+description: blog-
 weight: 1
 ---

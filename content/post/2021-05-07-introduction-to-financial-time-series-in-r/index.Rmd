@@ -1,0 +1,94 @@
+---
+title: Introduction to Financial time series in R
+author: Juan Pacheco
+date: '2021-05-07'
+slug: []
+categories:
+  - R
+tags:
+  - R Markdown
+  - plot
+  - Finance
+---
+
+# Financial series
+
+This post brings a quick overview of financial series in R. It's common analyze time series in advanced economics or finance courses. Some courses and depending of university use a particular software for this purpose, from  Excel to high-level programming languages  like Stata, R or Python. In this case, I'm going to show how to get the financial series from Yahoo Finance by two methods. First, I'll do it within a long code using quantmond library, after that I gonna use tidyquant library to reduce the previous code and automatize it. 
+
+In order to manipulate our data we gonna call dplyr and quantmod to get the financial series. Let's begin with four stocks: Google, Apple, Facebook and Amazon. 
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(quantmod)
+
+```
+
+The function getSymbols from quantmod is a useful tool that brings our stocks from Yahoo sources. There are some parameters in the function like Symbols, env, return.class, from, to, periodicity that can be change. 
+
+Symbols: there are a lot of stock stickers  visible on Yahoo finance page. 
+
+Stickers: "FB", "GOOG","AAPL","AMZN". 
+
+xts in return.class is a way to get time series object,
+from and to are filled with a range of dates, periodicity could be yearly, quarterly or monthly. 
+
+In this example, get all stocks means to repeat the process four times. 
+
+```{r}
+ getSymbols.yahoo(Symbols = "FB", env = globalenv(), return.class = "xts", from = "2020-01-30", to = "2020-12-22",periodicity = "weekly")
+
+
+
+ getSymbols.yahoo(Symbols = "GOOG", env = globalenv(), return.class = "xts", from = "2020-01-30", to = "2020-12-22",periodicity = "weekly")
+
+
+ getSymbols.yahoo(Symbols = "AAPL", env = globalenv(), return.class = "xts", from = "2020-01-30", to = "2020-12-22",periodicity = "weekly")
+
+getSymbols.yahoo(Symbols = "AMZN", env = globalenv(), return.class = "xts", from = "2020-01-30", to = "2020-12-22",periodicity = "weekly")
+
+```
+
+The result of use getSymbols is an xts object with six columns: Open, High, Low, Close, Volume and adjusted. 
+```{r}
+head(FB,10)
+```
+
+The second way to do this process more efficient and short is using tidyquant library. The library has some functions incorporate in order to minimize code extension. One of those function is tq_get, really helpful for bring a numerous of stocks. tq_transmute gets stock returns with a daily periodicity and pivot_wider is increasing the number of columns and decreasing the number of rows.  
+
+```{r message=FALSE, warning=FALSE}
+library("tidyquant")
+library("timetk")
+library(tidyr)
+
+stickers<- c("FB", "AMZN","GOOG","AAPL")
+
+p_adj<- stickers %>%
+  tq_get(  from = '2019-01-31',
+           to = '2019-12-30',
+           get = 'stock.prices') %>%
+  group_by(symbol) %>%
+  tq_transmute(select = adjusted,
+               mutate_fun = to.period,
+               period= "days", )  %>%
+  pivot_wider(names_from  = symbol, values_from = adjusted) %>%
+  tk_xts()
+
+
+```
+
+```{r}
+head(p_adj,10) 
+```
+
+Finally a good way to finish this post is visualizing our data. 
+
+```{r}
+quantmod::chart_Series(FB$FB.Adjusted, name = "FB Adjusted Price")
+```
+
+```{r}
+quantmod::chart_Series(p_adj$AAPL, name="Apple Adjusted Price")
+```
+
+In this post we learned ways to get financial time series from yahoo finance using quantmod and tidyquant. We saw quantmod functions like getSymbols and tq_get of tidyquant library, in one hand getSymbols brought an xts object in an easily but inefficient manner,  and the other hand we automatized it with tq_get that brought us an amount of series  efficiently. 
+
+

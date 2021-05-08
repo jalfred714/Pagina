@@ -1,10 +1,10 @@
 ---
-description: Lorem ipsum dolor sit amet
+description: Repositorio de mi blog realizado con blogdown y Hugo
 draft: false
-repo: '#'
+repo: 'Pagina'
 tags:
-- go
-- golang
+- R
+- github
 - hugo
 title: Project 1
 weight: 1

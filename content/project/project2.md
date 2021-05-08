@@ -1,11 +1,11 @@
 ---
-description: Consectetur adipiscing elit
+description: Estructura de un blog realizada en HTLM y potenciada con CSS. 
 draft: false
-repo: '#'
+repo: 'blog-'
 tags:
 - html
 - css
-- js
+- vsc
 title: Project 2
 weight: 2
 ---

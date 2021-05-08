@@ -1,7 +1,7 @@
 ---
-description: Cras felis sapien
+description: R code en VSC mediante extensiones de R y R LSP Client
 draft: false
-repo: '#'
+repo: 'R-vs-code'
 tags:
 - bootstrap
 - responsive

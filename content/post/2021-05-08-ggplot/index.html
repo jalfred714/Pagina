@@ -1,0 +1,105 @@
+---
+title: ggplot2 Graphics
+author: Juan Pacheco
+date: '2021-05-08'
+slug: ggplot
+categories:
+  - R
+tags:
+  - ggplot2
+  - R Markdown
+  - gapminder
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>##ggplot2 + Themes</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(gapminder)</code></pre>
+<pre><code>## Warning: package &#39;gapminder&#39; was built under R version 4.0.5</code></pre>
+<pre class="r"><code>library(RColorBrewer)
+
+library(ggplot2)
+
+data(&quot;gapminder&quot;)</code></pre>
+<pre class="r"><code>glimpse(gapminder)</code></pre>
+<pre><code>## Rows: 1,704
+## Columns: 6
+## $ country   &lt;fct&gt; Afghanistan, Afghanistan, Afghanistan, Afghanistan, Afghanis~
+## $ continent &lt;fct&gt; Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, Asia, ~
+## $ year      &lt;int&gt; 1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, ~
+## $ lifeExp   &lt;dbl&gt; 28.801, 30.332, 31.997, 34.020, 36.088, 38.438, 39.854, 40.8~
+## $ pop       &lt;int&gt; 8425333, 9240934, 10267083, 11537966, 13079460, 14880372, 12~
+## $ gdpPercap &lt;dbl&gt; 779.4453, 820.8530, 853.1007, 836.1971, 739.9811, 786.1134, ~</code></pre>
+<pre class="r"><code>datos&lt;- gapminder %&gt;% filter(year==&quot;2007&quot; ) %&gt;% arrange((lifeExp)) %&gt;% mutate(promedio_global= mean(lifeExp))
+
+datos2007&lt;- datos[40:50,]</code></pre>
+<pre class="r"><code># Add a geom_segment() layer
+palette &lt;- brewer.pal(5, &quot;RdYlBu&quot;)[-(2:4)]
+plt_country_vs_lifeExp&lt;-ggplot(datos2007, aes(x = lifeExp, y = country, color = lifeExp)) +
+  geom_point(size = 4) +
+  geom_segment(aes(xend = 30, yend = country), size = 2) +
+  geom_text(aes(label = lifeExp), color = &quot;white&quot;, size = 1.5) +  scale_x_continuous(&quot;&quot;, expand = c(0,0), limits = c(30,90), position = &quot;top&quot;) +
+  scale_color_gradientn(colors = palette) + labs(title=&quot;Highest and lowest life expectancies, 2007&quot;, caption=&quot;Source: gapminder&quot;)
+plt_country_vs_lifeExp</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>## More adds 
+#Define the theme
+plt_country_vs_lifeExp +
+  theme_classic() +
+  theme(axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text = element_text(color=&quot;black&quot;),
+        axis.title = element_blank(),
+        legend.position= &quot;none&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code># Add a theme 
+step_1_themes &lt;-theme(axis.line.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.text = element_text(color=&quot;black&quot;),
+      axis.title = element_blank(),
+      legend.position= &quot;none&quot;)
+
+global_mean&lt;- mean(datos2007$lifeExp)
+x_start &lt;- global_mean + 4
+y_start &lt;- 5.5
+x_end &lt;- global_mean
+y_end &lt;- 7.5
+
+plt_country_vs_lifeExp +
+  step_1_themes +
+  geom_vline(xintercept= global_mean, color=&quot;grey40&quot;, linetype=3) + 
+  annotate(
+    &quot;text&quot;,
+    x = x_start, y = y_start,
+    label = &quot;The\nglobal\naverage&quot;,
+    vjust = 1, size = 3, color = &quot;grey40&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#asignamos a annotate a una variable para rebajar el codigo
+step_3_annotation &lt;- annotate(
+  &quot;text&quot;,
+  x = x_start, y = y_start,
+  label = &quot;The\nglobal\naverage&quot;,
+  vjust = 1, size = 3, color = &quot;grey40&quot;)
+
+#Grafico final
+plt_country_vs_lifeExp +  
+  step_1_themes +
+  geom_vline(xintercept = global_mean, color = &quot;grey40&quot;, linetype = 3) +
+  step_3_annotation +
+  annotate(
+    &quot;curve&quot;,
+    x = x_start, y = y_start,
+    xend = x_end, yend = y_end,
+    arrow = arrow(length= unit(0.2, &quot;cm&quot;), type = &quot;closed&quot;),
+    color = &quot;grey40&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>

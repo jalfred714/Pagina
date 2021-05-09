@@ -1,0 +1,113 @@
+---
+title: 'Visualizing Time Series Data: Case Argentina '
+author: Juan Pacheco
+date: '2021-05-08'
+slug: Argentina
+categories:
+  - R
+tags:
+  - Macroeconomics
+  - Time Series
+  - Argentina
+description: ''
+---
+
+```{r message=FALSE, warning=FALSE}
+#packages 
+
+for (x in c("dplyr", "ggplot2","readxl","plotly"
+            ,"strucchange","hrbrthemes","quantmod", "ggfortify","gridExtra","psych")) {
+  library(x, character.only = TRUE)
+} 
+
+```
+
+## Macroeconomic variables
+
+
+```{r}
+datos<- read_excel("/Users/Juan Alfredo.DESKTOP-ETJ31JC/Documents/Universidad/Termino 2020 2S/R Samples/Pagina/PIB Argentina_1.xlsx")
+
+colnames(datos)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+fechas<- c("1993-01-01", "2021-06-20")
+st<- as.Date(fechas[1])
+end<- as.Date(fechas[2])
+
+
+time<- seq(st, end, by= "quarter")
+```
+
+
+
+```{r}
+# Create a xts object
+
+datos<- as.ts(datos)
+```
+
+```{r}
+dt<- datos[,c(2,4,10,13)]
+```
+
+# Gross Domestic Product (GDP) of Argentina 1993-2021
+
+```{r}
+p1<- datos %>% ggplot(aes(x=time, y= PIB)) + 
+  geom_line(linetype = "dashed", color= "blue") + 
+  theme( axis.ticks = element_blank(),
+         panel.grid = element_blank(),
+         panel.background = element_blank()) + 
+  labs(title = "Gross Domestic Product (GDP)", 
+       subtitle = "1993-2021", 
+       caption = "Source: Indec")  + scale_y_log10()
+```
+
+```{r}
+ggplotly(p1)
+```
+
+# Imports
+
+```{r}
+p2<- datos %>% ggplot(aes(x=time, y= import)) + 
+  geom_line(linetype = "dashed", color= "brown") + 
+  theme( axis.ticks = element_blank(),
+         panel.grid = element_blank(),
+         panel.background = element_blank()) + 
+  labs(title = "Imports ", 
+       subtitle = "1993-2021", 
+       caption = "Source: Indec")  + scale_y_log10()
+
+```
+
+```{r}
+ggplotly(p2)
+```
+
+# Public consumption 
+
+```{r}
+p3<- datos %>% ggplot(aes(x=time, y=consump_pub )) + 
+  geom_line(linetype = "dashed", color= "brown") + 
+  theme( axis.ticks = element_blank(),
+         panel.grid = element_blank(),
+         panel.background = element_blank()) + 
+  labs(title = "Public consumption ", 
+       subtitle = "1993-2021", 
+       caption = "Source: Indec")  + scale_y_log10()
+```
+
+```{r}
+ggplotly(p3)
+```
+
+# Correlation plot 
+
+```{r}
+corPlot(dt, cex = 1.2)
+```
+

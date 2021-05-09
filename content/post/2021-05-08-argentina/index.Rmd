@@ -16,7 +16,7 @@ description: ''
 #packages 
 
 for (x in c("dplyr", "ggplot2","readxl","plotly"
-            ,"strucchange","hrbrthemes","quantmod", "ggfortify","gridExtra","psych")) {
+            ,"psych", "ggfortify")) {
   library(x, character.only = TRUE)
 } 
 
@@ -27,6 +27,10 @@ for (x in c("dplyr", "ggplot2","readxl","plotly"
 
 ```{r}
 datos<- read_excel("/Users/Juan Alfredo.DESKTOP-ETJ31JC/Documents/Universidad/Termino 2020 2S/R Samples/Pagina/PIB Argentina_1.xlsx")
+
+dt<- datos[,c(2,4,10,13)]
+
+dt %>% mutate(m= import/PIB)  %>% mutate(x= export/PIB)
 
 colnames(datos)
 
@@ -47,15 +51,14 @@ time<- seq(st, end, by= "quarter")
 # Create a xts object
 
 datos<- as.ts(datos)
+
 ```
 
-```{r}
-dt<- datos[,c(2,4,10,13)]
-```
 
 # Gross Domestic Product (GDP) of Argentina 1993-2021
 
 ```{r}
+
 p1<- datos %>% ggplot(aes(x=time, y= PIB)) + 
   geom_line(linetype = "dashed", color= "blue") + 
   theme( axis.ticks = element_blank(),
@@ -64,6 +67,7 @@ p1<- datos %>% ggplot(aes(x=time, y= PIB)) +
   labs(title = "Gross Domestic Product (GDP)", 
        subtitle = "1993-2021", 
        caption = "Source: Indec")  + scale_y_log10()
+
 ```
 
 ```{r}
@@ -104,10 +108,45 @@ p3<- datos %>% ggplot(aes(x=time, y=consump_pub )) +
 ```{r}
 ggplotly(p3)
 ```
+# Relationship between Imports & Real Exchange Rate 
+
+m is the ratio of imports to GDP.
+
+x is the ratio  of export to (domestic) GDP
+
+```{r}
+dt1<- dt %>% mutate(m= import/PIB)  %>% mutate(x= export/PIB) 
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+dt1 %>% as.ts()
+```
+
+```{r message=FALSE, warning=FALSE}
+p4<- dt1 %>% ggplot(., aes(x= ITCRM, y= m)) + geom_point()+
+  geom_smooth(method = "lm") + scale_y_log10() + scale_x_log10()
+```
+
+```{r}
+ggplotly(p4)
+```
+
+# Relationship between Exports & Real Exchange Rate
+
+```{r message=FALSE, warning=FALSE}
+p5<- dt1 %>% ggplot(., aes(x= ITCRM, y= x)) + geom_point()+
+  geom_smooth(method = "lm") + scale_y_log10() + scale_x_log10()
+```
+
+```{r}
+ggplotly(p5)
+```
 
 # Correlation plot 
 
 ```{r}
+
 corPlot(dt, cex = 1.2)
 ```
 

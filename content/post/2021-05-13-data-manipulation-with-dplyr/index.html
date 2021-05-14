@@ -1,0 +1,537 @@
+---
+title: Data Manipulation
+author: Juan Pacheco
+date: '2021-05-13'
+slug: data manipulation with dplyr
+categories:
+  - R
+tags:
+  - dplyr
+  - data manipulation
+  - credit
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="{{< blogdown/postref >}}index_files/plotly-binding/plotly.js"></script>
+<script src="{{< blogdown/postref >}}index_files/typedarray/typedarray.min.js"></script>
+<script src="{{< blogdown/postref >}}index_files/jquery/jquery.min.js"></script>
+<link href="{{< blogdown/postref >}}index_files/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/crosstalk/js/crosstalk.min.js"></script>
+<link href="{{< blogdown/postref >}}index_files/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/plotly-main/plotly-latest.min.js"></script>
+
+
+<div id="r-package" class="section level2">
+<h2>R Package</h2>
+<p>Functions that were used:</p>
+<p>read_excel() for read excel files</p>
+<p>filter() in order to make subsets of our data</p>
+<p>mutate() Create new variables</p>
+<p>as.factor() covert a variable in factor</p>
+<p>glimpse similar to str() applied to a dataframe</p>
+<p>group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed “by group”</p>
+<p>summarise() o summarize() creates a new data frame that will have
+one or more rows for each combination of grouping variables</p>
+<p>n() used from within summarise, mutate and filter</p>
+</div>
+<div id="import-data" class="section level2">
+<h2>Import Data</h2>
+<pre class="r"><code>datos&lt;-  read_excel(path = &quot;/Users/Juan Alfredo.DESKTOP-ETJ31JC/Documents/Universidad/Termino 2020 2S/R Samples/Pagina/credit.xlsx&quot;, sheet = 2)</code></pre>
+</div>
+<div id="explore-data" class="section level2">
+<h2>Explore Data</h2>
+<pre class="r"><code> glimpse(datos)</code></pre>
+<pre><code>## Rows: 30,548
+## Columns: 25
+## $ Sucursal                &lt;chr&gt; &quot;SUCURSAL MAYOR&quot;, &quot;SATELITE 1&quot;, &quot;SUCURSAL MAYO~
+## $ `Nombre Agencia`        &lt;chr&gt; &quot;AGENCIA 6&quot;, &quot;AGENCIA 7&quot;, &quot;AGENCIA 1&quot;, &quot;AGENCI~
+## $ `Cod Operación`         &lt;chr&gt; &quot;00711&quot;, &quot;00373&quot;, &quot;01078&quot;, &quot;00598&quot;, &quot;00967&quot;, &quot;~
+## $ `No Cliente`            &lt;chr&gt; &quot;00562009438-9&quot;, &quot;001227008773-1&quot;, &quot;0036700963~
+## $ Clase                   &lt;chr&gt; &quot;NORMAL&quot;, &quot;REFINANCIADO&quot;, &quot;NORMAL&quot;, &quot;NORMAL&quot;, ~
+## $ `Tipo Producto`         &lt;chr&gt; &quot;Cartera&quot;, &quot;Cartera&quot;, &quot;Cartera&quot;, &quot;Cartera&quot;, &quot;C~
+## $ `Tipo Crédito`          &lt;chr&gt; &quot;MICROEMPRESA&quot;, &quot;COMERCIALES&quot;, &quot;CONSUMO&quot;, &quot;CON~
+## $ `Tipo Garantía`         &lt;chr&gt; &quot;GARANTE PERSONAL&quot;, &quot;HIPOTECARIA&quot;, &quot;GARANTE PE~
+## $ Garantía                &lt;dbl&gt; NA, 606687.97, NA, NA, NA, NA, 28454.39, NA, N~
+## $ `Monto Original`        &lt;dbl&gt; 8300.00, 327816.50, 15100.00, 5500.00, 10300.0~
+## $ `valor en mora`         &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00~
+## $ `saldo capital`         &lt;dbl&gt; 7085.65, 177825.56, 15100.00, 3410.21, 9552.40~
+## $ `Días Mora`             &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, ~
+## $ `Provision Constituida` &lt;dbl&gt; 70.86, 2667.38, 151.00, 34.10, 95.52, 237.72, ~
+## $ `Sector Economico`      &lt;chr&gt; &quot;COMERCIO AL POR MAYOR Y AL POR MENOR; REPARAC~
+## $ Actividad               &lt;chr&gt; &quot;COMERCIO AL POR MENOR DE OTROS PRODUCTOS N.C.~
+## $ Corte                   &lt;dttm&gt; 2019-09-30, 2019-09-30, 2019-09-30, 2019-09-3~
+## $ ESTADO                  &lt;chr&gt; &quot;POR VENCER&quot;, &quot;POR VENCER&quot;, &quot;POR VENCER&quot;, &quot;POR~
+## $ CALIFICACION            &lt;chr&gt; &quot;A1&quot;, &quot;A1&quot;, &quot;A1&quot;, &quot;A1&quot;, &quot;A1&quot;, &quot;A1&quot;, &quot;A1&quot;, &quot;A1&quot;~
+## $ PD                      &lt;dbl&gt; 0.0707, 0.1088, 0.0848, 0.1105, 0.0851, 0.1016~
+## $ `Rango de la calif`     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1~
+## $ `Estado Actual`         &lt;chr&gt; &quot;NO DEFAULT&quot;, &quot;NO DEFAULT&quot;, &quot;NO DEFAULT&quot;, &quot;NO ~
+## $ `vencido US$`           &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00~
+## $ `Improductivo us$`      &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00~
+## $ `Categoria De cliente`  &lt;chr&gt; &quot;buen cliente&quot;, &quot;buen cliente&quot;, &quot;buen cliente&quot;~</code></pre>
+</div>
+<div id="descriptive-statistic" class="section level2">
+<h2>Descriptive Statistic</h2>
+<pre class="r"><code>summary(datos)</code></pre>
+<pre><code>##    Sucursal         Nombre Agencia     Cod Operación       No Cliente       
+##  Length:30548       Length:30548       Length:30548       Length:30548      
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##     Clase           Tipo Producto      Tipo Crédito       Tipo Garantía     
+##  Length:30548       Length:30548       Length:30548       Length:30548      
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##     Garantía         Monto Original   valor en mora      saldo capital     
+##  Min.   :    888.8   Min.   :     0   Min.   :     0.0   Min.   :     0.1  
+##  1st Qu.:  10005.9   1st Qu.:  5200   1st Qu.:     0.0   1st Qu.:  3233.6  
+##  Median :  88489.6   Median : 11000   Median :     0.0   Median :  7146.4  
+##  Mean   : 173127.9   Mean   : 24801   Mean   :   310.7   Mean   : 16941.1  
+##  3rd Qu.: 169568.5   3rd Qu.: 24385   3rd Qu.:     0.0   3rd Qu.: 15398.4  
+##  Max.   :2265106.5   Max.   :770000   Max.   :160222.0   Max.   :715000.0  
+##  NA&#39;s   :27464       NA&#39;s   :85                                            
+##    Días Mora       Provision Constituida Sector Economico    Actividad        
+##  Min.   :   0.00   Min.   :    0.00      Length:30548       Length:30548      
+##  1st Qu.:   0.00   1st Qu.:   36.74      Class :character   Class :character  
+##  Median :   0.00   Median :   89.17      Mode  :character   Mode  :character  
+##  Mean   :  19.32   Mean   :  474.54                                           
+##  3rd Qu.:   0.00   3rd Qu.:  243.50                                           
+##  Max.   :1202.00   Max.   :45869.47                                           
+##                                                                               
+##      Corte                        ESTADO          CALIFICACION      
+##  Min.   :2019-09-30 00:00:00   Length:30548       Length:30548      
+##  1st Qu.:2019-12-31 00:00:00   Class :character   Class :character  
+##  Median :2020-03-31 00:00:00   Mode  :character   Mode  :character  
+##  Mean   :2020-04-06 22:53:26                                        
+##  3rd Qu.:2020-06-30 00:00:00                                        
+##  Max.   :2020-09-30 00:00:00                                        
+##                                                                     
+##        PD         Rango de la calif Estado Actual       vencido US$      
+##  Min.   :0.0011   Min.   :1.000     Length:30548       Min.   :     0.0  
+##  1st Qu.:0.0800   1st Qu.:1.000     Class :character   1st Qu.:     0.0  
+##  Median :0.0984   Median :1.000     Mode  :character   Median :     0.0  
+##  Mean   :0.1828   Mean   :1.702                        Mean   :   246.3  
+##  3rd Qu.:0.1179   3rd Qu.:1.000                        3rd Qu.:     0.0  
+##  Max.   :0.9801   Max.   :9.000                        Max.   :160222.0  
+##                                                                          
+##  Improductivo us$ Categoria De cliente
+##  Min.   :     0   Length:30548        
+##  1st Qu.:     0   Class :character    
+##  Median :     0   Mode  :character    
+##  Mean   :  1179                       
+##  3rd Qu.:     0                       
+##  Max.   :230544                       
+## </code></pre>
+</div>
+<div id="handle-missing-values-na" class="section level2">
+<h2>Handle missing values NA</h2>
+<pre class="r"><code>dt&lt;- datos %&gt;% filter(! is.na(.)) </code></pre>
+<p>In this way we can’t drop Na’s because the rows have values.</p>
+<pre class="r"><code>dt&lt;- datos %&gt;% filter( `Tipo Producto`!=&quot;Sobregiro&quot;)  </code></pre>
+<p>If we filter by “Sobregiro” we drop the NA’s in this “case”.</p>
+</div>
+<div id="group-by-class" class="section level1">
+<h1>Group By Class</h1>
+<pre class="r"><code>cl&lt;- dt %&gt;% group_by(Clase) %&gt;% mutate(Clase = as.factor(Clase)) %&gt;% summarise(count= n())</code></pre>
+<pre class="r"><code>kable(cl)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Clase</th>
+<th align="right">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">EN FIDEICOMISO</td>
+<td align="right">584</td>
+</tr>
+<tr class="even">
+<td align="left">LEGAL (COBRO JUDICIAL)</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">NORMAL</td>
+<td align="right">29682</td>
+</tr>
+<tr class="even">
+<td align="left">REESTRUCTURADA</td>
+<td align="right">26</td>
+</tr>
+<tr class="odd">
+<td align="left">REFINANCIADO</td>
+<td align="right">72</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="group-by-parent-branch-bank" class="section level1">
+<h1>Group by Parent &amp; branch bank</h1>
+<pre class="r"><code>pb&lt;-dt %&gt;% group_by(Sucursal) %&gt;% 
+  mutate(`Tipo Crédito` = as.factor(`Tipo Crédito`)) %&gt;% summarise(mean_mora=mean(`Días Mora`))</code></pre>
+<pre class="r"><code>kable(pb)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sucursal</th>
+<th align="right">mean_mora</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SATELITE 1</td>
+<td align="right">14.38060</td>
+</tr>
+<tr class="even">
+<td align="left">SATELITE 2</td>
+<td align="right">22.60097</td>
+</tr>
+<tr class="odd">
+<td align="left">SUCURSAL MAYOR</td>
+<td align="right">20.70807</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="group-by-credit-types-and-branches-bank" class="section level1">
+<h1>Group by Credit types and Branches bank</h1>
+<pre class="r"><code>cb&lt;- dt %&gt;% group_by(Sucursal,`Tipo Crédito`) %&gt;% summarise(across(c(&quot;Monto Original&quot;,&quot;Días Mora&quot;), ~ mean(.x, na.rm = TRUE)))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Sucursal&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>kable(cb)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sucursal</th>
+<th align="left">Tipo Crédito</th>
+<th align="right">Monto Original</th>
+<th align="right">Días Mora</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SATELITE 1</td>
+<td align="left">COMERCIALES</td>
+<td align="right">121996.719</td>
+<td align="right">18.87776</td>
+</tr>
+<tr class="even">
+<td align="left">SATELITE 1</td>
+<td align="left">CONSUMO</td>
+<td align="right">11816.921</td>
+<td align="right">12.58333</td>
+</tr>
+<tr class="odd">
+<td align="left">SATELITE 1</td>
+<td align="left">MICROEMPRESA</td>
+<td align="right">7102.309</td>
+<td align="right">16.40196</td>
+</tr>
+<tr class="even">
+<td align="left">SATELITE 1</td>
+<td align="left">VIVIENDA</td>
+<td align="right">50573.942</td>
+<td align="right">16.11294</td>
+</tr>
+<tr class="odd">
+<td align="left">SATELITE 2</td>
+<td align="left">COMERCIALES</td>
+<td align="right">79599.508</td>
+<td align="right">33.77559</td>
+</tr>
+<tr class="even">
+<td align="left">SATELITE 2</td>
+<td align="left">CONSUMO</td>
+<td align="right">11684.434</td>
+<td align="right">17.67924</td>
+</tr>
+<tr class="odd">
+<td align="left">SATELITE 2</td>
+<td align="left">MICROEMPRESA</td>
+<td align="right">7905.255</td>
+<td align="right">40.43750</td>
+</tr>
+<tr class="even">
+<td align="left">SATELITE 2</td>
+<td align="left">VIVIENDA</td>
+<td align="right">59141.207</td>
+<td align="right">22.19106</td>
+</tr>
+<tr class="odd">
+<td align="left">SUCURSAL MAYOR</td>
+<td align="left">COMERCIALES</td>
+<td align="right">57738.304</td>
+<td align="right">38.58498</td>
+</tr>
+<tr class="even">
+<td align="left">SUCURSAL MAYOR</td>
+<td align="left">CONSUMO</td>
+<td align="right">11938.943</td>
+<td align="right">10.50350</td>
+</tr>
+<tr class="odd">
+<td align="left">SUCURSAL MAYOR</td>
+<td align="left">MICROEMPRESA</td>
+<td align="right">9138.624</td>
+<td align="right">43.81461</td>
+</tr>
+<tr class="even">
+<td align="left">SUCURSAL MAYOR</td>
+<td align="left">VIVIENDA</td>
+<td align="right">55759.853</td>
+<td align="right">34.32609</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="average-default-by-days" class="section level1">
+<h1>Average default by days</h1>
+<pre class="r"><code>tb1&lt;- dt %&gt;% group_by(`Tipo Crédito`, CALIFICACION) %&gt;% mutate(`Tipo Crédito` = as.factor(`Tipo Crédito`), CALIFICACION = (as.factor(CALIFICACION))) %&gt;% summarise(count = n(),mean_mora=mean(`Días Mora`) )</code></pre>
+</div>
+<div id="table" class="section level1">
+<h1>Table</h1>
+<pre class="r"><code>kable(tb1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Tipo Crédito</th>
+<th align="left">CALIFICACION</th>
+<th align="right">count</th>
+<th align="right">mean_mora</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">COMERCIALES</td>
+<td align="left">A1</td>
+<td align="right">3242</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">COMERCIALES</td>
+<td align="left">A2</td>
+<td align="right">225</td>
+<td align="right">6.640000</td>
+</tr>
+<tr class="odd">
+<td align="left">COMERCIALES</td>
+<td align="left">A3</td>
+<td align="right">136</td>
+<td align="right">24.485294</td>
+</tr>
+<tr class="even">
+<td align="left">COMERCIALES</td>
+<td align="left">B1</td>
+<td align="right">179</td>
+<td align="right">41.418994</td>
+</tr>
+<tr class="odd">
+<td align="left">COMERCIALES</td>
+<td align="left">B2</td>
+<td align="right">105</td>
+<td align="right">70.971429</td>
+</tr>
+<tr class="even">
+<td align="left">COMERCIALES</td>
+<td align="left">C1</td>
+<td align="right">48</td>
+<td align="right">100.020833</td>
+</tr>
+<tr class="odd">
+<td align="left">COMERCIALES</td>
+<td align="left">C2</td>
+<td align="right">34</td>
+<td align="right">146.764706</td>
+</tr>
+<tr class="even">
+<td align="left">COMERCIALES</td>
+<td align="left">D</td>
+<td align="right">51</td>
+<td align="right">277.333333</td>
+</tr>
+<tr class="odd">
+<td align="left">COMERCIALES</td>
+<td align="left">E</td>
+<td align="right">106</td>
+<td align="right">865.018868</td>
+</tr>
+<tr class="even">
+<td align="left">CONSUMO</td>
+<td align="left">A1</td>
+<td align="right">16376</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">CONSUMO</td>
+<td align="left">A2</td>
+<td align="right">468</td>
+<td align="right">4.393162</td>
+</tr>
+<tr class="even">
+<td align="left">CONSUMO</td>
+<td align="left">A3</td>
+<td align="right">388</td>
+<td align="right">12.134021</td>
+</tr>
+<tr class="odd">
+<td align="left">CONSUMO</td>
+<td align="left">B1</td>
+<td align="right">613</td>
+<td align="right">23.406199</td>
+</tr>
+<tr class="even">
+<td align="left">CONSUMO</td>
+<td align="left">B2</td>
+<td align="right">306</td>
+<td align="right">37.745098</td>
+</tr>
+<tr class="odd">
+<td align="left">CONSUMO</td>
+<td align="left">C1</td>
+<td align="right">315</td>
+<td align="right">56.625397</td>
+</tr>
+<tr class="even">
+<td align="left">CONSUMO</td>
+<td align="left">C2</td>
+<td align="right">141</td>
+<td align="right">80.964539</td>
+</tr>
+<tr class="odd">
+<td align="left">CONSUMO</td>
+<td align="left">D</td>
+<td align="right">125</td>
+<td align="right">103.296000</td>
+</tr>
+<tr class="even">
+<td align="left">CONSUMO</td>
+<td align="left">E</td>
+<td align="right">478</td>
+<td align="right">327.916318</td>
+</tr>
+<tr class="odd">
+<td align="left">MICROEMPRESA</td>
+<td align="left">A1</td>
+<td align="right">2938</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">MICROEMPRESA</td>
+<td align="left">A2</td>
+<td align="right">60</td>
+<td align="right">5.100000</td>
+</tr>
+<tr class="odd">
+<td align="left">MICROEMPRESA</td>
+<td align="left">A3</td>
+<td align="right">118</td>
+<td align="right">12.491525</td>
+</tr>
+<tr class="even">
+<td align="left">MICROEMPRESA</td>
+<td align="left">B1</td>
+<td align="right">174</td>
+<td align="right">23.488506</td>
+</tr>
+<tr class="odd">
+<td align="left">MICROEMPRESA</td>
+<td align="left">B2</td>
+<td align="right">80</td>
+<td align="right">37.512500</td>
+</tr>
+<tr class="even">
+<td align="left">MICROEMPRESA</td>
+<td align="left">C1</td>
+<td align="right">112</td>
+<td align="right">56.633929</td>
+</tr>
+<tr class="odd">
+<td align="left">MICROEMPRESA</td>
+<td align="left">C2</td>
+<td align="right">54</td>
+<td align="right">81.240741</td>
+</tr>
+<tr class="even">
+<td align="left">MICROEMPRESA</td>
+<td align="left">D</td>
+<td align="right">42</td>
+<td align="right">106.238095</td>
+</tr>
+<tr class="odd">
+<td align="left">MICROEMPRESA</td>
+<td align="left">E</td>
+<td align="right">240</td>
+<td align="right">427.583333</td>
+</tr>
+<tr class="even">
+<td align="left">VIVIENDA</td>
+<td align="left">A1</td>
+<td align="right">2252</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">VIVIENDA</td>
+<td align="left">A2</td>
+<td align="right">467</td>
+<td align="right">11.929336</td>
+</tr>
+<tr class="even">
+<td align="left">VIVIENDA</td>
+<td align="left">A3</td>
+<td align="right">220</td>
+<td align="right">40.527273</td>
+</tr>
+<tr class="odd">
+<td align="left">VIVIENDA</td>
+<td align="left">B1</td>
+<td align="right">129</td>
+<td align="right">78.023256</td>
+</tr>
+<tr class="even">
+<td align="left">VIVIENDA</td>
+<td align="left">B2</td>
+<td align="right">36</td>
+<td align="right">153.500000</td>
+</tr>
+<tr class="odd">
+<td align="left">VIVIENDA</td>
+<td align="left">C1</td>
+<td align="right">22</td>
+<td align="right">196.227273</td>
+</tr>
+<tr class="even">
+<td align="left">VIVIENDA</td>
+<td align="left">C2</td>
+<td align="right">16</td>
+<td align="right">235.937500</td>
+</tr>
+<tr class="odd">
+<td align="left">VIVIENDA</td>
+<td align="left">D</td>
+<td align="right">5</td>
+<td align="right">313.200000</td>
+</tr>
+<tr class="even">
+<td align="left">VIVIENDA</td>
+<td align="left">E</td>
+<td align="right">65</td>
+<td align="right">772.261539</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data visualization</h1>
+<pre class="r"><code>ggplotly(p1)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"data":[{"orientation":"v","width":0.9,"base":0,"x":[1],"y":[8392],"text":"Sucursal: SATELITE 1<br />obser:  8392<br />Sucursal: SATELITE 1","type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"SATELITE 1","legendgroup":"SATELITE 1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":0,"x":[2],"y":[4110],"text":"Sucursal: SATELITE 2<br />obser:  4110<br />Sucursal: SATELITE 2","type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"SATELITE 2","legendgroup":"SATELITE 2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":0,"x":[3],"y":[17864],"text":"Sucursal: SUCURSAL MAYOR<br />obser: 17864<br />Sucursal: SUCURSAL MAYOR","type":"bar","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"SUCURSAL MAYOR","legendgroup":"SUCURSAL MAYOR","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":54.7945205479452},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Branches","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,3.6],"tickmode":"array","ticktext":["SATELITE 1","SATELITE 2","SUCURSAL MAYOR"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["SATELITE 1","SATELITE 2","SUCURSAL MAYOR"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Type","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-893.2,18757.2],"tickmode":"array","ticktext":["0","5000","10000","15000"],"tickvals":[0,5000,10000,15000],"categoryorder":"array","categoryarray":["0","5000","10000","15000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Obsr","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Sucursal","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"17e868a74af3":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"17e868a74af3","visdat":{"17e868a74af3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>ggplotly(p2)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"data":[{"orientation":"v","width":[0.9,0.9,0.9],"base":[0,121996.718715993,201596.226590008],"x":[1,1,1],"y":[121996.718715993,79599.5078740158,57738.304029249],"text":["Tipo Crédito: COMERCIALES<br />mean_cred: 121996.719<br />Tipo Crédito: COMERCIALES","Tipo Crédito: COMERCIALES<br />mean_cred:  79599.508<br />Tipo Crédito: COMERCIALES","Tipo Crédito: COMERCIALES<br />mean_cred:  57738.304<br />Tipo Crédito: COMERCIALES"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"COMERCIALES","legendgroup":"COMERCIALES","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9],"base":[0,11816.9209375,23501.3547978435],"x":[2,2,2],"y":[11816.9209375,11684.4338603435,11938.9432717581],"text":["Tipo Crédito: CONSUMO<br />mean_cred:  11816.921<br />Tipo Crédito: CONSUMO","Tipo Crédito: CONSUMO<br />mean_cred:  11684.434<br />Tipo Crédito: CONSUMO","Tipo Crédito: CONSUMO<br />mean_cred:  11938.943<br />Tipo Crédito: CONSUMO"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"CONSUMO","legendgroup":"CONSUMO","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9],"base":[0,7102.30882352941,15007.5633582516],"x":[3,3,3],"y":[7102.30882352941,7905.25453472222,9138.62447344229],"text":["Tipo Crédito: MICROEMPRESA<br />mean_cred:   7102.309<br />Tipo Crédito: MICROEMPRESA","Tipo Crédito: MICROEMPRESA<br />mean_cred:   7905.255<br />Tipo Crédito: MICROEMPRESA","Tipo Crédito: MICROEMPRESA<br />mean_cred:   9138.624<br />Tipo Crédito: MICROEMPRESA"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MICROEMPRESA","legendgroup":"MICROEMPRESA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9],"base":[0,50573.9417474619,109715.149064535],"x":[4,4,4],"y":[50573.9417474619,59141.2073170732,55759.8534891304],"text":["Tipo Crédito: VIVIENDA<br />mean_cred:  50573.942<br />Tipo Crédito: VIVIENDA","Tipo Crédito: VIVIENDA<br />mean_cred:  59141.207<br />Tipo Crédito: VIVIENDA","Tipo Crédito: VIVIENDA<br />mean_cred:  55759.853<br />Tipo Crédito: VIVIENDA"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"VIVIENDA","legendgroup":"VIVIENDA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":54.7945205479452},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Credit","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,4.6],"tickmode":"array","ticktext":["COMERCIALES","CONSUMO","MICROEMPRESA","VIVIENDA"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["COMERCIALES","CONSUMO","MICROEMPRESA","VIVIENDA"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Credit types","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-12966.7265309629,272301.25715022],"tickmode":"array","ticktext":["0e+00","1e+05","2e+05"],"tickvals":[-1.81898940354586e-12,100000,200000],"categoryorder":"array","categoryarray":["0e+00","1e+05","2e+05"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Initial Amount ","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"Tipo Crédito","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"17e8651949cf":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"17e8651949cf","visdat":{"17e8651949cf":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>

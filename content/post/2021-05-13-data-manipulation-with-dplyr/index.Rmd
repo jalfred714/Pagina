@@ -1,0 +1,161 @@
+---
+title: Data Manipulation
+author: Juan Pacheco
+date: '2021-05-13'
+slug: data manipulation with dplyr
+categories:
+  - R
+tags:
+  - dplyr
+  - data manipulation
+  - credit
+---
+
+## R Package
+```{r include=FALSE}
+librerias<- c("dplyr","ggplot2","plotly","readxl","knitr")
+
+for (lib in librerias) {
+  
+      library(lib, character.only = TRUE)  
+}
+
+```
+
+Functions that were used:
+
+read_excel() for read excel files
+
+filter() in order to make subsets of our data 
+
+mutate() Create new variables 
+
+as.factor() covert a variable in factor 
+
+glimpse similar to str() applied to a dataframe
+
+group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed "by group"
+
+summarise() o summarize() creates a new data frame that will have 
+one or more rows for each combination of grouping variables
+
+n() used from within summarise, mutate and filter 
+
+## Import Data
+```{r}
+datos<-  read_excel(path = "/Users/Juan Alfredo.DESKTOP-ETJ31JC/Documents/Universidad/Termino 2020 2S/R Samples/Pagina/credit.xlsx", sheet = 2)
+
+```
+
+## Explore Data 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+ glimpse(datos)
+```
+
+## Descriptive Statistic 
+
+```{r message=FALSE, warning=FALSE}
+
+summary(datos)
+
+```
+
+## Handle missing values NA
+```{r}
+
+dt<- datos %>% filter(! is.na(.)) 
+
+```
+
+In this way we can't drop Na's because the rows have values. 
+
+```{r}
+dt<- datos %>% filter( `Tipo Producto`!="Sobregiro")  
+```
+
+If we filter by "Sobregiro" we drop the NA's in this "case". 
+
+# Group By Class 
+
+```{r echo=TRUE}
+cl<- dt %>% group_by(Clase) %>% mutate(Clase = as.factor(Clase)) %>% summarise(count= n())
+
+```
+
+```{r}
+kable(cl)
+```
+
+
+# Group by Parent & branch bank
+```{r echo=TRUE}
+pb<-dt %>% group_by(Sucursal) %>% 
+  mutate(`Tipo Crédito` = as.factor(`Tipo Crédito`)) %>% summarise(mean_mora=mean(`Días Mora`))
+```
+
+```{r}
+kable(pb)
+```
+
+
+# Group by Credit types and Branches bank 
+```{r echo=TRUE}
+cb<- dt %>% group_by(Sucursal,`Tipo Crédito`) %>% summarise(across(c("Monto Original","Días Mora"), ~ mean(.x, na.rm = TRUE)))
+```
+
+```{r}
+kable(cb)
+```
+
+# Average default by days
+```{r message=FALSE, warning=FALSE}
+tb1<- dt %>% group_by(`Tipo Crédito`, CALIFICACION) %>% mutate(`Tipo Crédito` = as.factor(`Tipo Crédito`), CALIFICACION = (as.factor(CALIFICACION))) %>% summarise(count = n(),mean_mora=mean(`Días Mora`) )
+
+
+```
+# Table 
+```{r}
+kable(tb1)
+```
+
+# Data visualization
+
+```{r include=FALSE}
+p1<-dt %>% group_by(Sucursal) %>%
+  summarise(obser= n()) %>%
+  mutate(Sucursal = as.factor(Sucursal)) %>%
+  ggplot(aes(x = Sucursal, y = obser, fill = Sucursal)) +
+  geom_bar(stat = 'identity') +
+  theme_minimal() +
+  labs(x = "Type", y = "Obsr", title = "Branches") +
+  scale_y_continuous()
+```
+
+```{r}
+ggplotly(p1)
+```
+
+```{r include=FALSE}
+p2<-dt %>% group_by(Sucursal, `Tipo Crédito`) %>%
+    summarise(mean_cred= mean(`Monto Original`)) %>%
+  mutate(`Tipo Credito` = as.factor(`Tipo Crédito`)) %>%
+  ggplot(aes(x = `Tipo Crédito`, y = mean_cred, fill = `Tipo Crédito`)) +
+  geom_bar(stat = 'identity') +
+  theme_minimal() +
+  labs(x = "Credit types", y = "Initial Amount ", title = "Credit") +
+  scale_y_continuous()
+```
+
+```{r}
+ggplotly(p2)
+```
+
+
+
+
+
+
+
+
+

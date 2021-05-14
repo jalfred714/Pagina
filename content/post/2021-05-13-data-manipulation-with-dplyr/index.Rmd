@@ -12,6 +12,9 @@ tags:
 ---
 
 ## R Package
+
+dplyr, ggplot2, plotly, readxl and knitr.
+
 ```{r include=FALSE}
 librerias<- c("dplyr","ggplot2","plotly","readxl","knitr")
 

@@ -48,4 +48,7 @@ menu:
     - name: Projects
       url: /project/
       weight: 4
-   
+    - name: Resume
+      url:"/Users/Juan Alfredo.DESKTOP-ETJ31JC/Documents/Universidad/Termino 2020 2S/R Samples/Pagina/cv.pdf/"
+      weight: 5 
+      

@@ -1,0 +1,61 @@
+---
+output: stevetemplates::cv
+geometry: margin=1in
+
+title: "CV"
+author: Juan Pacheco
+
+
+fontawesome: yes
+email: juanalfred16@hotmail.com
+# github: jalfred714
+# twitter: jalfred7
+#osf: "Enter 5 digit osf string here"
+phone: "+593 9 6065 9647"
+web: https://juanpacheco.netlify.app/
+updated: no
+
+keywords: R Markdown, academic CV, template
+
+fontfamily: mathpazo
+fontfamilyoptions: sc, osf
+fontsize: 11pt
+linkcolor: blue
+urlcolor: blue
+---
+
+# Employment
+
+*Arthur Guinness & Son*
+
+Finance Assistant Intern (Naportec, Dole) \hfill 2019-2020
+
+Administrative Assistant Intern (Naportec, Dole) \hfill 2018
+
+# Education
+
+*Escuela Superior Politécnica Del Litoral*, B.A. Economics \hfill 
+
+*Universidad Torcuato Di Tella*, MSc in Applied Economics \hfill 
+
+
+## Thesis
+
+Desafíos en el pronóstico de los ingresos tributarios en el Ecuador en tiempos de pandemia SARS COVID-19 periodo 2020-2021
+
+
+# Interests
+
+Econometrics
+
+Financial econometrics
+
+Macroeconomics
+
+Data analysis
+
+Statistics
+
+Programming Languages
+
+

@@ -11,10 +11,13 @@ tags:
   - gapminder
 ---
 
+<div style="text-align: justify">
 
-##ggplot2 + Themes 
 
-```{r}
+
+We gonna use dplyr, gapminder, RColorBrewer, ggplot2 libraries in this example. 
+
+```{r include=FALSE}
 library(dplyr)
 
 library(gapminder)
@@ -23,19 +26,55 @@ library(RColorBrewer)
 
 library(ggplot2)
 
-data("gapminder")
+```
 
+Let's load gapminder data frame and see colnames. 
+```{r}
+data("gapminder")
+colnames(gapminder)
 ```
 
 
+gapminder is a data frame with 9 variables and more than 10 thousand observations. In variables we have country names, continent, year, life expectancy, population and gross domestic product per capita. 
+
+```{r message=FALSE, warning=FALSE}
+gapminder %>% head()
+```
+
+## Explore Data 
+
 ```{r}
 glimpse(gapminder)
+```
 
+## Mutate and Filter 
+
+For this example we gonna create a new variable called promedio global and our year of analysis will be 2007. Also, let's take a portion of countries to visualize much better the graphics. 
+
+```{r message=FALSE, warning=FALSE}
 datos<- gapminder %>% filter(year=="2007" ) %>% arrange((lifeExp)) %>% mutate(promedio_global= mean(lifeExp))
 
 datos2007<- datos[40:50,]
 ```
 
+## ggplot2 + Themes 
+
+There are some functions that we can add through our plots . In order to make them more informative: 
+
+**brewer.pal:** makes the color palettes from ColorBrewer available as R palettes. [Source 1](https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
+
+**Themes:** Themes are a powerful way to customize the non-data components of your plots: i.e. titles, labels, fonts, background, gridlines, and legends. [Source 2](https://www.rdocumentation.org/packages/ggplot2/versions/3.3.3/topics/theme)
+
+
+**geom_point:** The point geom is used to create scatterplots. [Source 3](https://www.rdocumentation.org/packages/ggplot2/versions/3.3.3/topics/geom_point)
+
+**geom_text:** Adds only text to the plot [Source 4](https://www.rdocumentation.org/packages/ggplot2/versions/3.3.3/topics/geom_label)
+
+**geom_segment:** Draws a straight line between points (x, y) and (xend, yend). [Source 5](https://www.rdocumentation.org/packages/ggplot2/versions/3.3.3/topics/geom_segment)
+
+**geom_vline:** This geom allows you to annotate the plot with vertical lines. [Source 6](https://www.rdocumentation.org/packages/ggplot2/versions/0.9.1/topics/geom_vline)
+
+### Examples 
 
 ```{r}
 # Add a geom_segment() layer
@@ -45,6 +84,7 @@ plt_country_vs_lifeExp<-ggplot(datos2007, aes(x = lifeExp, y = country, color = 
   geom_segment(aes(xend = 30, yend = country), size = 2) +
   geom_text(aes(label = lifeExp), color = "white", size = 1.5) +  scale_x_continuous("", expand = c(0,0), limits = c(30,90), position = "top") +
   scale_color_gradientn(colors = palette) + labs(title="Highest and lowest life expectancies, 2007", caption="Source: gapminder")
+
 plt_country_vs_lifeExp
 ```
 
@@ -110,4 +150,4 @@ plt_country_vs_lifeExp +
 ```
 
     
-
+<div/>

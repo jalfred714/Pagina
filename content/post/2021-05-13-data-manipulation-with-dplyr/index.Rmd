@@ -10,10 +10,11 @@ tags:
   - data manipulation
   - credit
 ---
+<div style="text-align: justify"> 
 
-## R Package
+# R Packages 
 
-dplyr, ggplot2, plotly, readxl and knitr.
+we gonna use dplyr, ggplot2, plotly, readxl and knitr in this example.
 
 ```{r include=FALSE}
 librerias<- c("dplyr","ggplot2","plotly","readxl","knitr")
@@ -25,24 +26,24 @@ for (lib in librerias) {
 
 ```
 
-Functions that were used:
+**Functions that were used:**
 
-read_excel() for read excel files
+**read_excel():** for read excel files.
 
-filter() in order to make subsets of our data 
+**filter():** in order to make subsets of our data. 
 
-mutate() Create new variables 
+**mutate():** To create new variables. 
 
-as.factor() covert a variable in factor 
+**as.factor():** To convert a variable in factor. 
 
-glimpse similar to str() applied to a dataframe
+**glimpse similar to str():** applied to a dataframe.
 
-group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed "by group"
+**group_by():** takes an existing tbl and converts it into a grouped tbl where operations are performed "by group".
 
-summarise() o summarize() creates a new data frame that will have 
-one or more rows for each combination of grouping variables
+**summarise() o summarize():** creates a new data frame that will have 
+one or more rows for each combination of grouping variables.
 
-n() used from within summarise, mutate and filter 
+**n():** used from within summarise, mutate and filter. 
 
 ## Import Data
 ```{r}
@@ -154,7 +155,7 @@ p2<-dt %>% group_by(Sucursal, `Tipo Crédito`) %>%
 ggplotly(p2)
 ```
 
-
+<div/>
 
 
 

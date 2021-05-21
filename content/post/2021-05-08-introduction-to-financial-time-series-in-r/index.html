@@ -15,17 +15,20 @@ description: ''
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 
 
+<div style="text-align: justify">
+
 <div id="financial-series" class="section level1">
 <h1>Financial series</h1>
-<p>This post brings a quick overview of financial series in R. It’s common analyze time series in advanced economics or finance courses. Some courses and depending of university use a particular software for this purpose, from Excel to high-level programming languages like Stata, R or Python. In this case, I’m going to show how to get the financial series from Yahoo Finance by two methods. First, I’ll do it within a long code using quantmond library, after that I gonna use tidyquant library to reduce the previous code and automatize it.</p>
+<p>This post brings a quick overview of financial series in R. It’s common analyze time series in advanced economics or finance courses. Some courses and depending of university use a particular software for this purpose, from Excel to high-level programming languages like Stata, R or Python. In this case, I’m going to show how to get the financial series from Yahoo Finance by two methods. First, I’ll do it within a long code using <strong>quantmond</strong> library, after that I gonna use <strong>tidyquant</strong> library to reduce the previous code and automatize it.</p>
 <p>In order to manipulate our data we gonna call dplyr and quantmod to get the financial series. Let’s begin with four stocks: Google, Apple, Facebook and Amazon.</p>
 <pre class="r"><code>library(dplyr)
 library(quantmod)</code></pre>
-<p>The function getSymbols from quantmod is a useful tool that brings our stocks from Yahoo sources. There are some parameters in the function like Symbols, env, return.class, from, to, periodicity that can be change.</p>
-<p>Symbols: there are a lot of stock stickers visible on Yahoo finance page.</p>
-<p>Stickers: “FB”, “GOOG”,“AAPL”,“AMZN”.</p>
-<p>xts in return.class is a way to get time series object,
-from and to are filled with a range of dates, periodicity could be yearly, quarterly or monthly.</p>
+<p>The function <strong>getSymbols</strong> from quantmod is a useful tool that brings our stocks from Yahoo sources. There are some parameters in the function like Symbols, env, return.class, from, to, periodicity that can be change.</p>
+<p><strong>Symbols:</strong> there are a lot of stock stickers visible on Yahoo finance page.</p>
+<p><strong>Stickers:</strong> “FB”, “GOOG”,“AAPL”,“AMZN”.</p>
+<p><strong>xts:</strong> in return.class is a way to get time series object.</p>
+<p><strong>from and to:</strong> are filled with a range of dates.</p>
+<p><strong>periodicity:</strong> could be yearly, quarterly or monthly.</p>
 <p>In this example, get all stocks means to repeat the process four times.</p>
 <pre class="r"><code> getSymbols.yahoo(Symbols = &quot;FB&quot;, env = globalenv(), return.class = &quot;xts&quot;, from = &quot;2020-01-30&quot;, to = &quot;2020-12-22&quot;,periodicity = &quot;weekly&quot;)</code></pre>
 <pre><code>## [1] &quot;FB&quot;</code></pre>
@@ -48,7 +51,7 @@ from and to are filled with a range of dates, periodicity could be yearly, quart
 ## 2020-03-16  152.32  159.93 137.10   149.73 183359800      149.73
 ## 2020-03-23  149.66  164.00 142.25   156.79 146892200      156.79
 ## 2020-03-30  159.18  170.93 150.83   154.18 112568700      154.18</code></pre>
-<p>The second way to do this process more efficient and short is using tidyquant library. The library has some functions incorporate in order to minimize code extension. One of those function is tq_get, really helpful for bring a numerous of stocks. tq_transmute gets stock returns with a daily periodicity and pivot_wider is increasing the number of columns and decreasing the number of rows.</p>
+<p>The second way to do this process more efficient and short is using tidyquant library. The library has some functions incorporate in order to minimize code extension. One of those function is <strong>tq_get</strong>, really helpful for bring a numerous of stocks. <strong>tq_transmute</strong> gets stock returns with a daily periodicity and <strong>pivot_wider</strong> is increasing the number of columns and decreasing the number of rows.</p>
 <pre class="r"><code>library(&quot;tidyquant&quot;)
 library(&quot;timetk&quot;)
 library(tidyr)
@@ -67,20 +70,23 @@ p_adj&lt;- stickers %&gt;%
   tk_xts()</code></pre>
 <pre class="r"><code>head(p_adj,10) </code></pre>
 <pre><code>##                FB    AMZN    GOOG     AAPL
-## 2019-01-31 166.69 1718.73 1116.37 40.58243
-## 2019-02-01 165.71 1626.23 1110.75 40.60194
-## 2019-02-04 169.25 1633.31 1132.80 41.75523
-## 2019-02-05 171.16 1658.81 1145.99 42.46964
-## 2019-02-06 170.49 1640.26 1115.23 42.48427
-## 2019-02-07 166.38 1614.37 1098.71 41.67965
-## 2019-02-08 167.33 1588.22 1095.06 41.72861
-## 2019-02-11 165.79 1591.00 1095.01 41.48864
-## 2019-02-12 165.04 1638.01 1121.37 41.84616
-## 2019-02-13 164.07 1640.00 1120.16 41.67229</code></pre>
+## 2019-01-31 166.69 1718.73 1116.37 40.51361
+## 2019-02-01 165.71 1626.23 1110.75 40.53309
+## 2019-02-04 169.25 1633.31 1132.80 41.68442
+## 2019-02-05 171.16 1658.81 1145.99 42.39762
+## 2019-02-06 170.49 1640.26 1115.23 42.41223
+## 2019-02-07 166.38 1614.37 1098.71 41.60897
+## 2019-02-08 167.33 1588.22 1095.06 41.65786
+## 2019-02-11 165.79 1591.00 1095.01 41.41829
+## 2019-02-12 165.04 1638.01 1121.37 41.77520
+## 2019-02-13 164.07 1640.00 1120.16 41.60163</code></pre>
 <p>Finally a good way to finish this post is visualizing our data.</p>
 <pre class="r"><code>quantmod::chart_Series(FB$FB.Adjusted, name = &quot;FB Adjusted Price&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>quantmod::chart_Series(p_adj$AAPL, name=&quot;Apple Adjusted Price&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>In this post we learned ways to get financial time series from yahoo finance using quantmod and tidyquant. We saw quantmod functions like getSymbols and tq_get of tidyquant library, in one hand getSymbols brought an xts object in an easily but inefficient manner, and the other hand we automatized it with tq_get that brought us an amount of series efficiently.</p>
+<p>In this post we learned ways to get financial time series from yahoo finance using quantmod and tidyquant. We saw quantmod functions like <strong>getSymbols</strong> and <strong>tq_get</strong> of tidyquant library, in one hand getSymbols brought an xts object in an easily but inefficient manner, and the other hand we automatized it with <strong>tq_get</strong> that brought us an amount of series efficiently.</p>
+<div/>
+
+
 </div>

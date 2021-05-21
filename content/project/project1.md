@@ -1,5 +1,5 @@
 ---
-description: Repositorio de mi blog realizado con blogdown y Hugo
+description: My blog repository on Github using blogdown and Hugo Themes. 
 draft: false
 repo: 'Pagina'
 tags:

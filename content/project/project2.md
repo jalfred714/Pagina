@@ -1,5 +1,5 @@
 ---
-description: Estructura de un blog realizada en HTLM y potenciada con CSS. 
+description: Blog structure with HTML/CSS 
 draft: false
 repo: 'blog-'
 tags:
@@ -9,3 +9,4 @@ tags:
 title: Project 2
 weight: 2
 ---
+

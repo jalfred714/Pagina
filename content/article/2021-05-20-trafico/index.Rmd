@@ -1,0 +1,53 @@
+---
+title: Tráfico de flora y fauna en Argentina
+author: ''
+date: '2021-05-20'
+slug: trafico
+categories:
+  - Políticas de Justicia y Seguridad
+tags:
+  - Argentina
+  - Fauna & Flora
+description: ''
+output: 
+  html_document: 
+    theme: readable
+    number_sections: yes
+---
+
+
+
+
+Asunto: Oportunidad para promover acciones que detengan el tráfico de especies y plantas en Argentina. 
+
+
+El crecimiento del comercio ilegal de vida silvestre es una tendencia en América Latina y nuestro país no escapa de esta realidad. Se ha convertido en uno de los delitos transnacionales que pone en riesgo a especies llevándolas en algunos casos cerca de la extinción. Este tipo de delito está clasificado como la cuarta actividad delictiva más lucrativa y suele estar relacionada con el tráfico de drogas y armas, aunque su riesgo es mucho menor.
+
+La inacción estatal en esta temática es evidente en nuestro país. Los escasos controles, la débil legislación, el no considerar al tráfico de fauna como una forma de crimen organizado y el hecho de hacer énfasis a la hora de castigar y procesar a los delincuentes del primer eslabón de la cadena y no en las demás partes implicadas en el delito, son muestra de ello. Por ello recomiendo incorporar este tema en la agenda impulsando una nueva legislación desde el parlamento que impliquen cambios en la percepción de este delito y profesionalice los organismos de control y cooperación.
+
+### 1.	Tráfico de flora y fauna en Argentina
+
+El comercio ilegal de animales y plantas es uno de los negocios más lucrativos en el mundo, ya que, mueve grandes cantidades de dinero. Un informe de Naciones Unidas e INTERPOL estimó que a nivel mundial el tráfico ilícito de flora y fauna mueve hasta 23.000 millones de dólares en el mundo; en Argentina se calcula que esta cifra es de 50 millones de dólares por año. 
+
+Por su ilegalidad, los registros oficiales acerca de la cantidad de animales silvestres y plantas que son removidos de su hábitat natural en Argentina, son prácticamente inexistentes. Sin embargo, una investigación publicada en el 2017 que detalla información sobre un muestreo del tráfico de especies en el país, revela que 7500 animales (vivos y muertos) estuvieron involucrados en el comercio ilícito durante un solo año (2016), esto resulta ser mayor a la población (1500) libre y cautiva que se encuentra dentro del Ecoparque en CABA. 
+
+Los métodos utilizados por estas estructuras delictivas en el país van desde el robo de los animales hasta la caza ilegal. Los animales y plantas que se sustraen de la naturaleza se venden localmente como mascotas e internacionalmente como piezas de colección y en algunos casos como carne comestible. Se calcula que uno de cada diez animales sobrevive a este proceso. En cuanto a las especies más comercializadas se destacan las aves, siendo las más típicas el cardenal común y amarillo, tucán y loro hablador. También distintos tipos de reptiles, felinos, tortugas, ciervos, mamíferos marinos y edentados. 
+
+Estas modalidades delictivas están creando un impacto negativo en la naturaleza, ya que, la pérdida de flora y fauna implica un desequilibrio del ecosistema, y una pérdida de los institutos de caza de los animales. Esto no solo afecta al mundo silvestre sino también perjudica las actividades humanas, ya que, los animales capturados son transmisores de enfermedades y virus. Una muestra de ello, fue la transmisión del virus SARS COVID-19. Según la División de Fauna del Departamento de Delitos Ambientales de la Policía Federal Argentina más de 1500 especies de animales y 25000 plantas se encuentran en peligro de extinción por el tráfico ilegal de especies y plantas. 
+
+### 2. Inacción, percepción errónea y nula coordinación frente al tráfico ilegal de vida silvestre.
+
+El crecimiento del tráfico ilegal de vida silvestre en nuestro país es consecuencia de la inacción estatal en algunas áreas. En primer lugar, nuestro país no considera a estos delitos como parte del crimen organizado. Por otra parte, el escaso control por parte de fuerzas de seguridad profesionales permite que Argentina sea un país donde este delito pueda expandirse cada vez más.
+
+Los delitos de este tipo nunca tuvieron una legislación lo suficientemente robusta para otorgar penas duras. Los castigos o costos de realizar esta actividad son menores que los beneficios ya que se trata de un delito excarcelable en nuestro país. Aquellos que son castigados son los que forman parte del primer eslabón de la cadena.  Si nuestro país considerara al tráfico ilegal de vida silvestre como parte del crimen organizado se podría concentrar esfuerzos en las demás partes implicadas que son las que lideran estas redes de tráfico.
+
+Por otra parte, la poca presencia de fuerzas de seguridad permite que prácticas como el robo y la caza ilegal sigan siendo las formas predilectas de sustracción de vida silvestre. Una de las características de nuestro país son las grandes extensiones de terrenos donde se encuentran los animales y plantas, por lo que hace más fácil estas prácticas tanto de nacionales como de extranjeros. Las principales rutas de ingreso son por Bolivia, Paraguay, Chile y Brasil. Siendo este un delito transnacional, que opera en redes, se torna necesaria la cooperación a nivel nacional (entre fuerzas provinciales) y a nivel internacional.
+
+### 3. Recomendaciones
+
+Nuestro país está siendo víctima de un tipo de delito poco dimensionado donde lo que se pone en riesgo es nuestra naturaleza. La pérdida de vida silvestre implica cambios en los ecosistemas y tiene como consecuencia el peligro de extinción de plantas y animales nativos. Al tratarse de un delito transnacional, la gobernabilidad de nuestro país se pone en jaque al no poder dar respuestas a esta problemática. Millones de dólares son utilizados para financiar otros tipos de delitos como la venta de drogas y armas y para el lavado de dinero. Nuestra legislación es bastante laxa en esta temática, y los beneficios que trae aparejado estos delitos en relación a los castigos es bastante superior. Por ello, recomiendo incorporar en agenda este tema y modificar su legislación para que pase a considerarse un delito de crimen organizado y que se prevea la creación de un cuerpo de seguridad profesional que pueda actuar en coordinación con otras fuerzas nacionales e internacionales.
+
+Una reforma en la legislación vigente implicaría cambiar la concepción sobre este delito y comenzar a tratarlo como un delito de crimen organizado. De esta manera las penas dejaran de ser excarcelables y los recursos/esfuerzos destinados a la protección de la vida silvestre serian acordes a la dimensión de la problemática. En paralelo y como consecuencia de esta reforma, es necesario la creación de un cuerpo de seguridad profesional que trabaje de manera coordinada con las ya existentes fuerzas provinciales y con fuerzas de países limítrofes. Para la profesionalización será necesario realizar cursos y capacitaciones acerca de buenas prácticas, crear mecanismos de disuasión, y llevar adelante una política de tolerancia cero en materia de corrupción.  
+
+
+</justify>

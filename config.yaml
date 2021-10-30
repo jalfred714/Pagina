@@ -51,9 +51,6 @@ menu:
     - name: Articles
       url: /article/
       weight: 5
-    - name: Resume
-      url: /resume/cv.html
-      weight: 6
-      
+
 
       

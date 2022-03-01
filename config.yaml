@@ -6,7 +6,7 @@ disqusShortname: username
 googleAnalytics: ''
 params:
   accent: red
-  author: Juan Pacheco
+  author: 
   backgroundColor: white
   description: Personal Blog
   font: Raleway
